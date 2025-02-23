@@ -1,5 +1,5 @@
 # quickchart-server MCP Server
-
+![](https://badge.mcpx.dev?type=server 'MCP Server')
 A Model Context Protocol server for generating charts using QuickChart.io
 
 This is a TypeScript-based MCP server that provides chart generation capabilities. It allows you to create various types of charts through MCP tools.
@@ -19,6 +19,12 @@ This server integrates with QuickChart.io's URL-based chart generation service t
 - `download_chart` - Download a chart image to a local file
   - Takes chart configuration and output path as parameters
   - Saves the chart image to the specified location
+![image](https://github.com/user-attachments/assets/c6864098-dd9a-48ff-b53a-d897427748f7)
+
+![image](https://github.com/user-attachments/assets/c008adbb-55ec-4432-bfe7-5644a0fccfae)
+
+![image](https://github.com/user-attachments/assets/1093570f-7c6b-4e5f-ad69-f8a9f950376a)
+
 
 ## Supported Chart Types
 - Bar charts: For comparing values across categories
@@ -111,3 +117,8 @@ The Inspector will provide a URL to access debugging tools in your browser.
 ## Documentation References
 - [QuickChart Documentation](https://quickchart.io/documentation/)
 - [Chart Types Reference](https://quickchart.io/documentation/chart-types/)
+
+## 📜 License
+
+This project is licensed under the MIT License.
+
