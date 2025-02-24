@@ -1,5 +1,8 @@
 # quickchart-server MCP Server
 
+![image](https://github.com/user-attachments/assets/1093570f-7c6b-4e5f-ad69-f8a9f950376a)
+<a href="https://smithery.ai/server/@GongRzhe/Quickchart-MCP-Server"><img alt="Smithery Badge" src="https://smithery.ai/badge/@GongRzhe/Quickchart-MCP-Server"></a>
+
 ![](https://badge.mcpx.dev?type=server 'MCP Server')
 
 A Model Context Protocol server for generating charts using QuickChart.io
@@ -24,8 +27,6 @@ This server integrates with QuickChart.io's URL-based chart generation service t
 ![image](https://github.com/user-attachments/assets/c6864098-dd9a-48ff-b53a-d897427748f7)
 
 ![image](https://github.com/user-attachments/assets/c008adbb-55ec-4432-bfe7-5644a0fccfae)
-
-![image](https://github.com/user-attachments/assets/1093570f-7c6b-4e5f-ad69-f8a9f950376a)
 
 
 ## Supported Chart Types
@@ -89,6 +90,14 @@ npm run watch
 ```
 
 ## Installation
+
+### Installing via Smithery
+
+To install QuickChart Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@GongRzhe/Quickchart-MCP-Server):
+
+```bash
+npx -y @smithery/cli install @GongRzhe/Quickchart-MCP-Server --client claude
+```
 
 To use with Claude Desktop, add the server config:
 
