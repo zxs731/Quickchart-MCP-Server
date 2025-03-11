@@ -1,6 +1,9 @@
 # quickchart-server MCP Server
 
 ![image](https://github.com/user-attachments/assets/1093570f-7c6b-4e5f-ad69-f8a9f950376a)
+<a href="https://glama.ai/mcp/servers/y17zluizso">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/y17zluizso/badge" alt="Quickchart-MCP-Server MCP server" />
+</a>
 <a href="https://smithery.ai/server/@GongRzhe/Quickchart-MCP-Server"><img alt="Smithery Badge" src="https://smithery.ai/badge/@GongRzhe/Quickchart-MCP-Server"></a>
 
 ![](https://badge.mcpx.dev?type=server 'MCP Server')
@@ -132,4 +135,3 @@ The Inspector will provide a URL to access debugging tools in your browser.
 ## 📜 License
 
 This project is licensed under the MIT License.
-
