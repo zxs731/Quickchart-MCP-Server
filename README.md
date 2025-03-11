@@ -4,9 +4,8 @@
 <a href="https://glama.ai/mcp/servers/y17zluizso">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/y17zluizso/badge" alt="Quickchart-MCP-Server MCP server" />
 </a>
-<a href="https://smithery.ai/server/@GongRzhe/Quickchart-MCP-Server"><img alt="Smithery Badge" src="https://smithery.ai/badge/@GongRzhe/Quickchart-MCP-Server"></a>
 
-![](https://badge.mcpx.dev?type=server 'MCP Server')
+<a href="https://smithery.ai/server/@GongRzhe/Quickchart-MCP-Server"><img alt="Smithery Badge" src="https://smithery.ai/badge/@GongRzhe/Quickchart-MCP-Server"></a> ![](https://badge.mcpx.dev?type=server 'MCP Server')
 
 A Model Context Protocol server for generating charts using QuickChart.io
 
