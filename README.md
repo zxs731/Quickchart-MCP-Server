@@ -86,12 +86,21 @@ Build the server:
 npm run build
 ```
 
-For development with auto-rebuild:
-```bash
-npm run watch
-```
-
 ## Installation
+
+### Installing
+
+ ```bash
+ npm install @gongrzhe/quickchart-mcp-server
+ ```
+
+### Installing via Smithery
+ 
+ To install QuickChart Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@GongRzhe/Quickchart-MCP-Server):
+ 
+ ```bash
+ npx -y @smithery/cli install @gongrzhe/quickchart-mcp-server --client claude
+ ```
 
 To use with Claude Desktop, add the server config:
 
@@ -109,15 +118,22 @@ On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
 }
 ```
 
-### Debugging
+or
 
-Since MCP servers communicate over stdio, debugging can be challenging. We recommend using the [MCP Inspector](https://github.com/modelcontextprotocol/inspector), which is available as a package script:
-
-```bash
-npm run inspector
+```json
+{
+  "mcpServers": {
+    "quickchart-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@gongrzhe/quickchart-mcp-server"
+      ]
+    }
+  }
+}
 ```
 
-The Inspector will provide a URL to access debugging tools in your browser.
 
 ## Documentation References
 - [QuickChart Documentation](https://quickchart.io/documentation/)

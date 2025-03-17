@@ -1,23 +1,43 @@
 {
-  "name": "quickchart-server",
-  "version": "1.0.0",
-  "description": "A Model Context Protocol server",
-  "private": true,
+  "name": "@gongrzhe/quickchart-mcp-server",
+  "version": "1.0.3",
+  "description": "A Model Context Protocol server for generating charts using QuickChart.io",
   "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build"
+  },
   "bin": {
-    "quickchart-server": "./build/index.js"
+    "quickchart-mcp-server": "./build/index.js"
   },
   "files": [
     "build"
   ],
-  "scripts": {
-    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
-    "prepare": "npm run build",
-    "watch": "tsc --watch",
-    "inspector": "npx @modelcontextprotocol/inspector build/index.js"
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "quickchart",
+    "chart",
+    "data-visualization"
+  ],
+  "author": "gongrzhe",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GongRzhe/Quickchart-MCP-Server"
+  },
+  "homepage": "https://github.com/GongRzhe/Quickchart-MCP-Server#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "0.6.0",
+    "@modelcontextprotocol/sdk": "^0.6.0",
     "axios": "^1.7.9"
   },
   "devDependencies": {
