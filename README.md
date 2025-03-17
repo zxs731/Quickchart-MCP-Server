@@ -93,14 +93,6 @@ npm run watch
 
 ## Installation
 
-### Installing via Smithery
-
-To install QuickChart Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@GongRzhe/Quickchart-MCP-Server):
-
-```bash
-npx -y @smithery/cli install @GongRzhe/Quickchart-MCP-Server --client claude
-```
-
 To use with Claude Desktop, add the server config:
 
 On MacOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
