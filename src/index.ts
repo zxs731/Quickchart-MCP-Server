@@ -77,6 +77,28 @@ class QuickChartServer {
   }
 
   private generateChartConfig(args: any): ChartConfig {
+    // Add defensive checks to handle possibly malformed input
+    if (!args) {
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        'No arguments provided to generateChartConfig'
+      );
+    }
+    
+    if (!args.type) {
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        'Chart type is required'
+      );
+    }
+    
+    if (!args.datasets || !Array.isArray(args.datasets)) {
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        'Datasets must be a non-empty array'
+      );
+    }
+    
     const { type, labels, datasets, title, options = {} } = args;
     
     this.validateChartType(type);
@@ -85,13 +107,21 @@ class QuickChartServer {
       type,
       data: {
         labels: labels || [],
-        datasets: datasets.map((dataset: any) => ({
-          label: dataset.label || '',
-          data: dataset.data,
-          backgroundColor: dataset.backgroundColor,
-          borderColor: dataset.borderColor,
-          ...dataset.additionalConfig
-        }))
+        datasets: datasets.map((dataset: any) => {
+          if (!dataset || !dataset.data) {
+            throw new McpError(
+              ErrorCode.InvalidParams,
+              'Each dataset must have a data property'
+            );
+          }
+          return {
+            label: dataset.label || '',
+            data: dataset.data,
+            backgroundColor: dataset.backgroundColor,
+            borderColor: dataset.borderColor,
+            ...(dataset.additionalConfig || {})
+          };
+        })
       },
       options: {
         ...options,
@@ -206,10 +236,10 @@ class QuickChartServer {
               },
               outputPath: {
                 type: 'string',
-                description: 'Path where the chart image should be saved'
+                description: 'Path where the chart image should be saved. If not provided, the chart will be saved to Desktop or home directory.'
               }
             },
-            required: ['config', 'outputPath']
+            required: ['config']
           }
         }
       ]
@@ -242,16 +272,113 @@ class QuickChartServer {
 
         case 'download_chart': {
           try {
-            const { config, outputPath } = request.params.arguments as { 
+            const { config, outputPath: userProvidedPath } = request.params.arguments as { 
               config: Record<string, unknown>;
-              outputPath: string;
+              outputPath?: string;
             };
-            const chartConfig = this.generateChartConfig(config);
+            
+            // Validate and normalize config first
+            if (!config || typeof config !== 'object') {
+              throw new McpError(
+                ErrorCode.InvalidParams,
+                'Config must be a valid chart configuration object'
+              );
+            }
+            
+            // Handle both direct properties and nested properties in 'data'
+            let normalizedConfig: any = { ...config };
+            
+            // If config has data property with datasets, extract them
+            if (config.data && typeof config.data === 'object' && 
+                (config.data as any).datasets && !normalizedConfig.datasets) {
+              normalizedConfig.datasets = (config.data as any).datasets;
+            }
+            
+            // If config has data property with labels, extract them
+            if (config.data && typeof config.data === 'object' && 
+                (config.data as any).labels && !normalizedConfig.labels) {
+              normalizedConfig.labels = (config.data as any).labels;
+            }
+            
+            // If type is inside data object but not at root, extract it
+            if (config.data && typeof config.data === 'object' && 
+                (config.data as any).type && !normalizedConfig.type) {
+              normalizedConfig.type = (config.data as any).type;
+            }
+            
+            // Final validation after normalization
+            if (!normalizedConfig.type || !normalizedConfig.datasets) {
+              throw new McpError(
+                ErrorCode.InvalidParams,
+                'Config must include type and datasets properties (either at root level or inside data object)'
+              );
+            }
+            
+            // Generate default outputPath if not provided
+            const fs = await import('fs');
+            const path = await import('path');
+            const os = await import('os');
+            
+            let outputPath = userProvidedPath;
+            if (!outputPath) {
+              // Get home directory
+              const homeDir = os.homedir();
+              const desktopDir = path.join(homeDir, 'Desktop');
+              
+              // Check if Desktop directory exists and is writable
+              let baseDir = homeDir;
+              try {
+                await fs.promises.access(desktopDir, fs.constants.W_OK);
+                baseDir = desktopDir; // Desktop exists and is writable
+              } catch (error) {
+                // Desktop doesn't exist or is not writable, use home directory
+                console.error('Desktop not accessible, using home directory instead');
+              }
+              
+              // Generate a filename based on chart type and timestamp
+              const timestamp = new Date().toISOString()
+                .replace(/:/g, '-')
+                .replace(/\..+/, '')
+                .replace('T', '_');
+              const chartType = normalizedConfig.type || 'chart';
+              outputPath = path.join(baseDir, `${chartType}_${timestamp}.png`);
+              
+              console.error(`No output path provided, using: ${outputPath}`);
+            }
+            
+            // Check if the output directory exists and is writable
+            const outputDir = path.dirname(outputPath);
+            
+            try {
+              await fs.promises.access(outputDir, fs.constants.W_OK);
+            } catch (error) {
+              throw new McpError(
+                ErrorCode.InvalidParams,
+                `Output directory does not exist or is not writable: ${outputDir}`
+              );
+            }
+            
+            const chartConfig = this.generateChartConfig(normalizedConfig);
             const url = await this.generateChartUrl(chartConfig);
             
-            const response = await axios.get(url, { responseType: 'arraybuffer' });
-            const fs = await import('fs');
-            await fs.promises.writeFile(outputPath, response.data);
+            try {
+              const response = await axios.get(url, { responseType: 'arraybuffer' });
+              await fs.promises.writeFile(outputPath, response.data);
+            } catch (error: any) {
+              if (error.code === 'EACCES' || error.code === 'EROFS') {
+                throw new McpError(
+                  ErrorCode.InvalidParams,
+                  `Cannot write to ${outputPath}: Permission denied`
+                );
+              }
+              if (error.code === 'ENOENT') {
+                throw new McpError(
+                  ErrorCode.InvalidParams,
+                  `Cannot write to ${outputPath}: Directory does not exist`
+                );
+              }
+              throw error;
+            }
             
             return {
               content: [
