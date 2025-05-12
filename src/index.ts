@@ -8,8 +8,9 @@ import {
   McpError,
 } from '@modelcontextprotocol/sdk/types.js';
 import axios from 'axios';
+import getenv from 'getenv';
 
-const QUICKCHART_BASE_URL = 'https://quickchart.io/chart';
+const QUICKCHART_BASE_URL = getenv('QUICKCHART_BASE_URL', 'https://quickchart.io/chart');
 
 interface ChartConfig {
   type: string;
