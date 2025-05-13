@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.6.0",
+    "@types/getenv": "^1.0.3",
     "axios": "^1.7.9"
   },
   "devDependencies": {
