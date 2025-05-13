@@ -1,6 +1,6 @@
 {
   "name": "@gongrzhe/quickchart-mcp-server",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A Model Context Protocol server for generating charts using QuickChart.io",
   "type": "module",
   "main": "build/index.js",
@@ -39,7 +39,8 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.6.0",
     "@types/getenv": "^1.0.3",
-    "axios": "^1.7.9"
+    "axios": "^1.7.9",
+    "getenv": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
