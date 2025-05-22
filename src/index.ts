@@ -201,7 +201,7 @@ class QuickChartServer {
                   type: 'object',
                   properties: {
                     label: { type: 'string' },
-                    data: { type: 'array' },
+                    data: { type: 'array' , items: { type: 'number' } },
                     backgroundColor: { 
                       oneOf: [
                         { type: 'string' },
